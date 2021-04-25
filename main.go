@@ -6,8 +6,8 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/jinzhu/gorm"
 
-	database "github.com/johnatasr/fiber-api/infra/database"
-	bookRepo "github.com/johnatasr/fiber-api/repositories/bookRepo"
+	database "github.com/johnatasr/fiber_api/infra/database"
+	bookRepo "github.com/johnatasr/fiber_api/repositories/bookRepo"
 )
 
 func setupRoutes(app *fiber.App) {

@@ -1,4 +1,4 @@
-module github.com/johnatasr/fiber-api
+module github.com/johnatasr/fiber_api
 
 go 1.16
 
