@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+    fiber:
+        build: .
+        container_name: fiber-api
+        volumes:
+            - .:/go/src/
+        ports: 
+            - "8000:8000"

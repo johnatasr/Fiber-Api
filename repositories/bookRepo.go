@@ -1,35 +1,46 @@
 package repositories
 
 import (
+	"fiber_api/models"
+
+	db "fiber_api/infra"
+
 	"github.com/gofiber/fiber"
-	db "github.com/johnatasr/fiber_api/infra/database"
 )
 
 func GetBooks(c *fiber.Ctx) {
 	db := db.DBConn
-	var books []Book
-	db.Find(&books)
-	c.JSON(books)
+	var books []models.Book
 
+	if err := db.Find(&books).Error; err != nil {
+		c.Send("No one book found")
+	}
+
+	c.JSON(books)
 }
 
 func GetBook(c *fiber.Ctx) {
 	id := c.Params("id")
 	db := db.DBConn
-	var book Book
-	db.Find(&book, id)
+
+	var book models.Book
+
+	if err := db.Find(&book, id).Error; err != nil {
+		c.Send("No one book with this ID")
+	}
+
 	c.JSON(book)
 }
 
 func NewBook(c *fiber.Ctx) {
 	db := db.DBConn
-	var book Book
 
-	data := c.Body()
+	book := new(models.Book)
 
-	book.Title = data.title
-	book.Author = data.author
-	book.Rating = data.rating
+	if err := c.BodyParser(book); err != nil {
+		c.Status(503).Send(err)
+		return
+	}
 
 	db.Create(&book)
 	c.JSON(book)
@@ -39,7 +50,7 @@ func DeleteBook(c *fiber.Ctx) {
 	id := c.Params("id")
 	db := db.DBConn
 
-	var book Book
+	var book models.Book
 
 	db.First(&book, id)
 
